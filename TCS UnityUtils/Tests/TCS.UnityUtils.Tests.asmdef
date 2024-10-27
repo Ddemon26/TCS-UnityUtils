@@ -1,0 +1,16 @@
+{
+    "name": "TCS.UnityUtils.Tests",
+    "rootNamespace": "TCS.UnityUtils.Tests",
+    "references": [
+        "GUID:e0a4d7c7b4a923d40910d287d126589e"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
