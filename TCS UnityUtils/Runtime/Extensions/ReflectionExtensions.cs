@@ -51,10 +51,9 @@ namespace TCS.UnityUtils.Extensions {
         /// <summary>Determines if a type is a strongly typed delegate.</summary>
         /// <returns>If the type is a strongly typed delegate.</returns>
         public static bool IsStrongDelegate(this Type type) {
-            if (!type.IsDelegate()) { return false; }
+            if (!type.IsDelegate()) return false;
 
             return !type.IsAbstract;
-
         }
 
         /// <summary>Determines if a field is a delegate.</summary>
@@ -96,6 +95,13 @@ namespace TCS.UnityUtils.Extensions {
         public static bool IsCastableTo(this Type from, Type to, bool implicitly = false)
             => to.IsAssignableFrom(from) || from.HasCastDefined(to, implicitly);
 
+        /// <summary>
+        /// Determines if a cast is defined between two types.
+        /// </summary>
+        /// <param name="from">The source type to check for cast definitions.</param>
+        /// <param name="to">The destination type to check for cast definitions.</param>
+        /// <param name="implicitly">If only implicit casts should be considered.</param>
+        /// <returns>True if a cast is defined between the types, otherwise false.</returns>
         static bool HasCastDefined(this Type from, Type to, bool implicitly) {
             if ((!from.IsPrimitive && !from.IsEnum) || (!to.IsPrimitive && !to.IsEnum)) {
                 return IsCastDefined
@@ -129,19 +135,31 @@ namespace TCS.UnityUtils.Extensions {
             }
 
             return false; // IntPtr, UIntPtr, Enum, Boolean
-
         }
 
-        static bool IsCastDefined
-        (
-            Type type, Func<MethodInfo, Type> baseType,
+        /// <summary>
+        /// Determines if a cast is defined between two types.
+        /// </summary>
+        /// <param name="type">The type to check for cast definitions.</param>
+        /// <param name="baseType">A function to get the base type from a method.</param>
+        /// <param name="derivedType">A function to get the derived type from a method.</param>
+        /// <param name="implicitly">If only implicit casts should be considered.</param>
+        /// <param name="lookInBase">If the base hierarchy should be searched for cast definitions.</param>
+        /// <returns>True if a cast is defined between the types, otherwise false.</returns>
+        static bool IsCastDefined(
+            Type type,
+            Func<MethodInfo, Type> baseType,
             Func<MethodInfo, Type> derivedType,
             bool implicitly,
             bool lookInBase
         ) {
+            // Set the binding flags to search for public and static methods, and optionally include the base hierarchy.
             var flags = BindingFlags.Public | BindingFlags.Static | (lookInBase ? BindingFlags.FlattenHierarchy : BindingFlags.DeclaredOnly);
+
+            // Get all methods from the type with the specified binding flags.
             MethodInfo[] methods = type.GetMethods(flags);
 
+            // Check if any method is an implicit or explicit cast operator and if the base type is assignable from the derived type.
             return methods.Where(m => m.Name == "op_Implicit" || (!implicitly && m.Name == "op_Explicit"))
                 .Any(m => baseType(m).IsAssignableFrom(derivedType(m)));
         }
@@ -258,6 +276,12 @@ namespace TCS.UnityUtils.Extensions {
 
         }
 
+        /// <summary>
+        /// Gets a formatted display name for a tuple type.
+        /// </summary>
+        /// <param name="type">The tuple type to generate a display name for.</param>
+        /// <param name="includeNamespace">If the namespace should be included when generating the typename.</param>
+        /// <returns>The generated display name for the tuple type.</returns>
         static string GetTupleDisplayName(this Type type, bool includeNamespace = false) {
             IEnumerable<string> parts = type
                 .GetGenericArguments()
@@ -295,8 +319,8 @@ namespace TCS.UnityUtils.Extensions {
             }
 
             if (a.IsGenericMethod != b.IsGenericMethod) return false;
-            if (!a.IsGenericMethod || !b.IsGenericMethod)
-                return true;
+            
+            if (!a.IsGenericMethod || !b.IsGenericMethod) return true; 
             {
                 Type[] genericA = a.GetGenericArguments();
                 Type[] genericB = b.GetGenericArguments();
@@ -314,7 +338,7 @@ namespace TCS.UnityUtils.Extensions {
         }
 
         /// <summary>
-        /// Rebases a method onto a new type by finding the corresponding method with an equal signature.
+        /// Rebase a method onto a new type by finding the corresponding method with an equal signature.
         /// </summary>
         /// <param name="method">Method to rebase</param>
         /// <param name="newBase">New type to rebase the method onto</param>
@@ -322,11 +346,9 @@ namespace TCS.UnityUtils.Extensions {
         public static MethodInfo RebaseMethod(this MethodInfo method, Type newBase) {
             var flags = BindingFlags.Default;
 
-            flags |= method.IsStatic ? BindingFlags.Static
-                : BindingFlags.Instance;
+            flags |= method.IsStatic ? BindingFlags.Static : BindingFlags.Instance;
 
-            flags |= method.IsPublic ? BindingFlags.Public
-                : BindingFlags.NonPublic;
+            flags |= method.IsPublic ? BindingFlags.Public : BindingFlags.NonPublic;
 
             MethodInfo[] candidates = newBase.GetMethods(flags)
                 .Where(x => AreMethodsEqual(x, method))
