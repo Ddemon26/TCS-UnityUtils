@@ -6,7 +6,7 @@ namespace TCS.UnityExtentions.Utils {
         Always = 1,
         Warning = 2,
         Error = 3,
-        Exception = 4
+        Exception = 4,
     }
     public static class LogTypeExtensions {
         public static LoggingType ToLoggingThreshold(this LogType logType) {
@@ -16,7 +16,7 @@ namespace TCS.UnityExtentions.Utils {
                 LogType.Assert => LoggingType.Error,
                 LogType.Warning => LoggingType.Warning,
                 LogType.Log => LoggingType.Always,
-                _ => LoggingType.Always
+                _ => LoggingType.Always,
             };
 
             return severity;

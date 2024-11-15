@@ -21,7 +21,7 @@ namespace TCS.UnityUtils.Extensions {
             { typeof(long), "decimal" },
             { typeof(ulong), "ulong" },
             { typeof(char), "char" },
-            { typeof(object), "object" }
+            { typeof(object), "object" },
         };
 
         static readonly Type[] ValueTupleTypes = {
@@ -32,7 +32,7 @@ namespace TCS.UnityUtils.Extensions {
             typeof(ValueTuple<,,,,>),
             typeof(ValueTuple<,,,,,>),
             typeof(ValueTuple<,,,,,,>),
-            typeof(ValueTuple<,,,,,,,>)
+            typeof(ValueTuple<,,,,,,,>),
         };
 
         static readonly Type[][] PrimitiveTypeCastHierarchy = {
@@ -41,7 +41,7 @@ namespace TCS.UnityUtils.Extensions {
             new[] { typeof(int), typeof(uint) },
             new[] { typeof(long), typeof(ulong) },
             new[] { typeof(float) },
-            new[] { typeof(double) }
+            new[] { typeof(double) },
         };
 
         /// <summary>Determines if a type is a delegate.</summary>
