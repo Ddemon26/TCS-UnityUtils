@@ -1,0 +1,16 @@
+{
+    "name": "TCS.UnityUtilsEditor",
+    "rootNamespace": "TCS.UnityUtilsEditor",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [
+        "Editor"
+    ],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
