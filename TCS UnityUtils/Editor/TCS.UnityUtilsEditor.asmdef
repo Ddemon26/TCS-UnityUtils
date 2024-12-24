@@ -2,10 +2,10 @@
     "name": "TCS.UnityUtilsEditor",
     "rootNamespace": "TCS.UnityUtilsEditor",
     "references": [],
-    "includePlatforms": [],
-    "excludePlatforms": [
+    "includePlatforms": [
         "Editor"
     ],
+    "excludePlatforms": [],
     "allowUnsafeCode": true,
     "overrideReferences": false,
     "precompiledReferences": [],
